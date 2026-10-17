@@ -17,10 +17,14 @@ public class UserModel {
     @Id 
     @GeneratedValue (generator = "UUID")
     private UUID id;
+    
+    @Column (length = 50, nullable = false)
     private String name;
 
-    @Column (unique = true)
+    @Column (unique = true, length = 320, nullable = false)
     private String email;
+
+    @Column (length = 128, nullable = false)
     private String password;
 
     @CreationTimestamp 
