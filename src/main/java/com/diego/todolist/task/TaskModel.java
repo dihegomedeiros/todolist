@@ -19,11 +19,13 @@ public class TaskModel {
     @GeneratedValue 
     private UUID id;
 
-    @Column (unique = true, length = 50)
+    @Column (unique = true, length = 50, nullable = false)
     private String title;
     private String description;
+
+    @Column (nullable = false, length = 30)
     private String priority;
-    private boolean completed;
+    private boolean completed = false;
 
     @CreationTimestamp 
     private LocalDateTime createdAt;
