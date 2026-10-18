@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -21,12 +23,14 @@ public class TaskController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Object> create(@RequestBody TaskModel taskModel) {
+    public ResponseEntity<Object> create(@RequestBody TaskModel taskModel, HttpServletRequest request) {
 
         final String title = taskModel.getTitle();
-        final UUID userId = taskModel.getUserId();
+        final UUID userId = (UUID) request.getAttribute("userId");
         
-        if (userId == null) {
+        taskModel.setUserId(userId);
+        
+        if (taskModel.getUserId() == null) {
             return ResponseEntity.badRequest().body("The task must have a corresponding user ID.");
         }
 
