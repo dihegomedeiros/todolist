@@ -8,6 +8,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.diego.todolist.user.IUserRepository;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,11 +47,12 @@ public class FilterTaskAuth extends OncePerRequestFilter {
             if (user == null) {
                 response.sendError(401);
 
-            // Validates the password
+            // Password decode and validation
             } else {
-                var isValid = user.getPassword().equals(authPassword);
-
-                if (isValid) {
+                var passwdVerify = BCrypt.verifyer()
+                .verify(authPassword.toCharArray(), user.getPassword());
+                
+                if (passwdVerify.verified) {
                     request.setAttribute("userId", user.getId());
                     filterChain.doFilter(request, response);
                 } else {
