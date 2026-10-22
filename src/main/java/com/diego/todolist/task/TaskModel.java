@@ -33,4 +33,17 @@ public class TaskModel {
 
     @Column (nullable = false)
     private UUID userId;
+
+    public void setTitle(String title) throws Exception {
+        var taskTitle = title.trim();
+
+        if (taskTitle.length() > 50) {
+            throw new Exception("The title must have a maximum of 50 characters.");
+        }
+        
+        if (taskTitle.length() == 0) {
+            throw new Exception("The title cannot be empty.");
+        }
+        this.title = title;
+    }
 }
